@@ -1,0 +1,39 @@
+services:
+  backend:
+    build: ./backend
+    container_name: attritioniq-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - API_KEY=${API_KEY}
+      - DATA_RAW_PATH=/app/rawdata/HRDataset_v14.csv
+      - DATA_PROCESSED_PATH=/app/artifacts/processed.csv
+      - ARTIFACTS_DIR=/app/artifacts
+    volumes:
+      # Mount only the CSV — does NOT overwrite /app/data/ (contains Python scripts)
+      - ./data/HRDataset_v14.csv:/app/rawdata/HRDataset_v14.csv:ro
+      # Separate writable volume for processed CSV + model artifacts
+      - model_artifacts:/app/artifacts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+
+  frontend:
+    build: ./frontend
+    container_name: attritioniq-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_API_KEY=${API_KEY}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  model_artifacts:
