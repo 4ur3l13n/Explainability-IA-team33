@@ -12,21 +12,16 @@ from sklearn.preprocessing import LabelEncoder
 import hashlib
 import os
 
-# ─────────────────────────────────────────────
-# PII columns to drop entirely (GDPR Article 4)
-# ─────────────────────────────────────────────
+
 PII_COLUMNS = [
-    "Employee_Name",  # Direct identifier
-    "DOB",            # Date of birth
-    "Zip",            # Location quasi-identifier
-    "State",          # Location quasi-identifier
-    "ManagerName",    # Indirect identifier
+    "Employee_Name",
+    "DOB",
+    "Zip",
+    "State",
+    "ManagerName",
 ]
 
-# ─────────────────────────────────────────────
-# Sensitive/discriminatory columns NOT used as features
-# (EU AI Act + ethical AI — cannot be used for predictions)
-# ─────────────────────────────────────────────
+
 SENSITIVE_COLUMNS = [
     "GenderID",
     "MarriedID",
@@ -38,9 +33,7 @@ SENSITIVE_COLUMNS = [
     "MaritalDesc",
 ]
 
-# ─────────────────────────────────────────────
-# Date columns to convert to tenure/age features
-# ─────────────────────────────────────────────
+
 DATE_COLUMNS = ["DateofHire", "DateofTermination", "LastPerformanceReview_Date"]
 
 
@@ -91,38 +84,34 @@ def load_and_clean(filepath: str) -> pd.DataFrame:
       - all engineered features
     """
     df = pd.read_csv(filepath)
-    print(f"[INFO] Loaded {len(df)} rows, {df.shape[1]} columns")
+    print(f"[INFO] Loaded {len (df )} rows, {df .shape [1 ]} columns")
 
-    # 1. Hash EmpID before dropping PII
     df["anon_id"] = df["EmpID"].apply(anonymize_id)
 
-    # 2. Drop PII
     df.drop(columns=PII_COLUMNS, inplace=True, errors="ignore")
-    print(f"[GDPR] Dropped PII columns: {PII_COLUMNS}")
+    print(f"[GDPR] Dropped PII columns: {PII_COLUMNS }")
 
-    # 3. Drop discriminatory/sensitive columns (not used as features)
     df.drop(columns=SENSITIVE_COLUMNS, inplace=True, errors="ignore")
-    print(f"[ETHICS] Dropped sensitive columns: {SENSITIVE_COLUMNS}")
+    print(f"[ETHICS] Dropped sensitive columns: {SENSITIVE_COLUMNS }")
 
-    # 4. Engineer date features
     df = compute_tenure_days(df)
     df.drop(columns=DATE_COLUMNS, inplace=True, errors="ignore")
 
-    # 5. Drop raw ID columns no longer needed
-    df.drop(columns=["EmpID", "PositionID", "DeptID", "ManagerID"], inplace=True, errors="ignore")
+    df.drop(
+        columns=["EmpID", "PositionID", "DeptID", "ManagerID"],
+        inplace=True,
+        errors="ignore",
+    )
 
-    # 6. Encode remaining categoricals
-    # Keep anon_id separate, encode the rest
     anon_ids = df["anon_id"].copy()
     df.drop(columns=["anon_id"], inplace=True)
     df = encode_categoricals(df)
     df["anon_id"] = anon_ids
 
-    # 7. Handle missing values
     df.fillna(df.median(numeric_only=True), inplace=True)
 
-    print(f"[INFO] Clean dataset: {len(df)} rows, {df.shape[1]} columns")
-    print(f"[INFO] Target distribution:\n{df['Termd'].value_counts()}")
+    print(f"[INFO] Clean dataset: {len (df )} rows, {df .shape [1 ]} columns")
+    print(f"[INFO] Target distribution:\n{df ['Termd'].value_counts ()}")
 
     return df
 
@@ -131,15 +120,27 @@ def get_feature_columns(df: pd.DataFrame) -> list:
     """
     Returns list of feature columns (excludes target and anon_id).
     """
-    exclude = ["Termd", "anon_id", "EmploymentStatus", "TermReason", "DateofTermination"]
+    exclude = [
+        "Termd",
+        "anon_id",
+        "EmploymentStatus",
+        "TermReason",
+        "DateofTermination",
+    ]
     return [c for c in df.columns if c not in exclude]
 
 
 if __name__ == "__main__":
-    raw_path = os.environ.get("DATA_RAW_PATH", os.path.join(os.path.dirname(__file__), "../../data/HRDataset_v14.csv"))
-    out_path = os.environ.get("DATA_PROCESSED_PATH", os.path.join(os.path.dirname(__file__), "../../data/processed.csv"))
+    raw_path = os.environ.get(
+        "DATA_RAW_PATH",
+        os.path.join(os.path.dirname(__file__), "../../data/HRDataset_v14.csv"),
+    )
+    out_path = os.environ.get(
+        "DATA_PROCESSED_PATH",
+        os.path.join(os.path.dirname(__file__), "../../data/processed.csv"),
+    )
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     clean_df = load_and_clean(raw_path)
     clean_df.to_csv(out_path, index=False)
-    print(f"[OK] Saved anonymized dataset to {out_path}")
+    print(f"[OK] Saved anonymized dataset to {out_path }")

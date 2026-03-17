@@ -10,9 +10,7 @@ services:
       - DATA_PROCESSED_PATH=/app/artifacts/processed.csv
       - ARTIFACTS_DIR=/app/artifacts
     volumes:
-      # Mount only the CSV — does NOT overwrite /app/data/ (contains Python scripts)
       - ./data/HRDataset_v14.csv:/app/rawdata/HRDataset_v14.csv:ro
-      # Separate writable volume for processed CSV + model artifacts
       - model_artifacts:/app/artifacts
     restart: unless-stopped
     healthcheck:
