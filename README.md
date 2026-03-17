@@ -30,11 +30,9 @@ This document outlines the value proposition, customer journey, cybersecurity an
 
 ### Execution
 - To run ingestion and train the local model:
-  - `python backend/main.py` (or `python backend/model/train.py` depending on implementation).
+  - `./start.sh`  (Docker Compose handles everything — preprocessing, training and API start automatically)
 - To serve a local dashboard (if applicable, e.g., Streamlit):
-  - `streamlit run frontend/src/App.jsx` or `python backend/app.py`.
-- To run with the file .sh:
-  - `./start.sh`
+  - Docker Compose starts the React frontend automatically via `./start.sh`
 
 On first launch, the backend runs the GDPR pipeline and trains the model
 automatically (~60 seconds). Once ready:
@@ -228,7 +226,7 @@ All services run locally via Docker Compose. Nothing is sent to external APIs.
 
 ### MVP (2-day local prototype)
 - CSV ingestion + preprocessing.
-- Predictive model (XGBoost/LightGBM).
+- Predictive model (Logistic Regression + SHAP LinearExplainer).
 - Minimal export module (features + employee_hash).
 - Basic local dashboard.
 
