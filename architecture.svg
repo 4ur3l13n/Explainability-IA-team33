@@ -1,0 +1,176 @@
+<svg viewBox="0 0 1100 700" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#94A3B8"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6366F1"/>
+    </marker>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000018"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#F8FAFC"/>
+
+  <!-- Title -->
+  <text x="550" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1E2761">AttritionIQ - System Architecture</text>
+  <text x="550" y="58" text-anchor="middle" font-size="13" fill="#64748B">Local Docker Compose Deployment - Privacy-First, Zero External API Calls</text>
+
+  <!-- ─── ZONE LABELS ────────────────────────────────────────────────── -->
+  <!-- Client Zone -->
+  <rect x="20" y="75" width="200" height="590" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="120" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338CA">CLIENT SIDE (Local)</text>
+
+  <!-- Docker Zone -->
+  <rect x="245" y="75" width="620" height="590" rx="10" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="555" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803D">DOCKER COMPOSE (localhost)</text>
+
+  <!-- HR User zone -->
+  <rect x="890" y="75" width="190" height="590" rx="10" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="985" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#C2410C">HR USER (Browser)</text>
+
+  <!-- ─── RAW DATA ───────────────────────────────────────────────────── -->
+  <rect x="35" y="110" width="170" height="80" rx="8" fill="white" stroke="#CBD5E1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="35" y="110" width="170" height="8" rx="8" fill="#64748B"/>
+  <text x="120" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">HRDataset_v14.csv</text>
+  <text x="120" y="172" text-anchor="middle" font-size="10" fill="#64748B">311 employees, 36 features</text>
+  <text x="120" y="185" text-anchor="middle" font-size="10" fill="#64748B">Mounted read-only (:ro)</text>
+
+  <!-- ─── DOCKER BACKEND CONTAINER ─────────────────────────────────── -->
+  <rect x="260" y="105" width="590" height="400" rx="10" fill="white" stroke="#BFDBFE" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="260" y="105" width="590" height="30" rx="10" fill="#1E2761"/>
+  <text x="555" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="white">attritioniq-backend  (Python 3.11 - port 8000)</text>
+
+  <!-- GDPR Pipeline box -->
+  <rect x="275" y="148" width="175" height="165" rx="8" fill="#EEF0FB" stroke="#C7D2FE" stroke-width="1.5"/>
+  <text x="362" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338CA">GDPR Pipeline</text>
+  <text x="362" y="184" text-anchor="middle" font-size="10" fill="#64748B">preprocessing.py</text>
+  <line x1="285" y1="190" x2="440" y2="190" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="362" y="205" text-anchor="middle" font-size="10" fill="#374151">Drop PII (Name, DOB, ZIP)</text>
+  <text x="362" y="220" text-anchor="middle" font-size="10" fill="#374151">Exclude protected attrs</text>
+  <text x="362" y="235" text-anchor="middle" font-size="10" fill="#374151">Hash EmpID (SHA-256)</text>
+  <text x="362" y="250" text-anchor="middle" font-size="10" fill="#374151">Date -> numeric features</text>
+  <text x="362" y="265" text-anchor="middle" font-size="10" fill="#374151">Label encode categoricals</text>
+  <text x="362" y="280" text-anchor="middle" font-size="10" fill="#374151">Impute missing (median)</text>
+  <text x="362" y="297" text-anchor="middle" font-size="10" fill="#15803D">Output: processed.csv</text>
+
+  <!-- Model box -->
+  <rect x="465" y="148" width="175" height="165" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="552" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803D">ML Model</text>
+  <text x="552" y="184" text-anchor="middle" font-size="10" fill="#64748B">train.py</text>
+  <line x1="475" y1="190" x2="630" y2="190" stroke="#86EFAC" stroke-width="1"/>
+  <text x="552" y="205" text-anchor="middle" font-size="10" fill="#374151">Logistic Regression</text>
+  <text x="552" y="220" text-anchor="middle" font-size="10" fill="#374151">C=0.1, balanced weights</text>
+  <text x="552" y="235" text-anchor="middle" font-size="10" fill="#374151">StandardScaler</text>
+  <text x="552" y="250" text-anchor="middle" font-size="10" fill="#374151">5-fold stratified CV</text>
+  <text x="552" y="265" text-anchor="middle" font-size="10" fill="#374151">Bias audit (PerfScore)</text>
+  <text x="552" y="280" text-anchor="middle" font-size="10" fill="#374151">SHAP LinearExplainer</text>
+  <text x="552" y="297" text-anchor="middle" font-size="10" fill="#15803D">Output: model.pkl, metrics.json</text>
+
+  <!-- FastAPI box -->
+  <rect x="655" y="148" width="185" height="165" rx="8" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+  <text x="747" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#C2410C">FastAPI Layer</text>
+  <text x="747" y="184" text-anchor="middle" font-size="10" fill="#64748B">main.py</text>
+  <line x1="665" y1="190" x2="830" y2="190" stroke="#FED7AA" stroke-width="1"/>
+  <text x="747" y="205" text-anchor="middle" font-size="10" fill="#374151">GET /health</text>
+  <text x="747" y="220" text-anchor="middle" font-size="10" fill="#374151">GET /employees</text>
+  <text x="747" y="235" text-anchor="middle" font-size="10" fill="#374151">GET /dashboard/stats</text>
+  <text x="747" y="250" text-anchor="middle" font-size="10" fill="#374151">GET /explain/{anon_id}</text>
+  <text x="747" y="265" text-anchor="middle" font-size="10" fill="#374151">POST /predict</text>
+  <text x="747" y="280" text-anchor="middle" font-size="10" fill="#374151">X-API-Key required</text>
+  <text x="747" y="297" text-anchor="middle" font-size="10" fill="#374151">Pydantic input validation</text>
+
+  <!-- Artifacts volume -->
+  <rect x="275" y="330" width="560" height="60" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="555" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Docker Volume: model_artifacts</text>
+  <text x="555" y="373" text-anchor="middle" font-size="10" fill="#64748B">processed.csv  |  xgboost_model.pkl  |  scaler.pkl  |  features.json  |  metrics.json</text>
+
+  <!-- Startup pipeline note -->
+  <rect x="275" y="408" width="560" height="80" rx="8" fill="#FAFAFA" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="555" y="428" text-anchor="middle" font-size="11" font-weight="bold" fill="#374151">Startup Pipeline (background thread)</text>
+  <text x="555" y="448" text-anchor="middle" font-size="10" fill="#64748B">1. Check if processed.csv exists  ->  2. Run GDPR pipeline if not  ->  3. Check if model.pkl exists</text>
+  <text x="555" y="463" text-anchor="middle" font-size="10" fill="#64748B">4. Train model if not  ->  5. Set ready=true  ->  6. Serve API normally</text>
+  <text x="555" y="480" text-anchor="middle" font-size="10" fill="#94A3B8">API responds on /health immediately (status: starting/preprocessing/training/ready)</text>
+
+  <!-- ─── DOCKER FRONTEND CONTAINER ─────────────────────────────────── -->
+  <rect x="260" y="520" width="590" height="120" rx="10" fill="white" stroke="#FBCFE8" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="260" y="520" width="590" height="28" rx="10" fill="#6366F1"/>
+  <text x="555" y="539" text-anchor="middle" font-size="12" font-weight="bold" fill="white">attritioniq-frontend  (Node 20 - port 3000)</text>
+
+  <rect x="280" y="560" width="175" height="65" rx="6" fill="#EEF0FB" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="367" y="578" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338CA">Dashboard.jsx</text>
+  <text x="367" y="593" text-anchor="middle" font-size="10" fill="#64748B">KPIs, risk distribution</text>
+  <text x="367" y="608" text-anchor="middle" font-size="10" fill="#64748B">SHAP global, dept stats</text>
+
+  <rect x="470" y="560" width="175" height="65" rx="6" fill="#EEF0FB" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="557" y="578" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338CA">EmployeeTable.jsx</text>
+  <text x="557" y="593" text-anchor="middle" font-size="10" fill="#64748B">Risk scores, badges</text>
+  <text x="557" y="608" text-anchor="middle" font-size="10" fill="#64748B">Filterable by risk tier</text>
+
+  <rect x="660" y="560" width="175" height="65" rx="6" fill="#EEF0FB" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="747" y="578" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338CA">ExplainView.jsx</text>
+  <text x="747" y="593" text-anchor="middle" font-size="10" fill="#64748B">SHAP waterfall</text>
+  <text x="747" y="608" text-anchor="middle" font-size="10" fill="#64748B">HR recommendations</text>
+
+  <!-- ─── HR USER ────────────────────────────────────────────────────── -->
+  <rect x="905" y="110" width="160" height="90" rx="8" fill="white" stroke="#FED7AA" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="905" y="110" width="160" height="8" rx="8" fill="#C2410C"/>
+  <text x="985" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">HR Manager</text>
+  <text x="985" y="170" text-anchor="middle" font-size="10" fill="#64748B">Browser: localhost:3000</text>
+  <text x="985" y="185" text-anchor="middle" font-size="10" fill="#64748B">Decision support only</text>
+
+  <!-- Human-in-the-loop badge -->
+  <rect x="905" y="215" width="160" height="55" rx="8" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="985" y="238" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400E">Human-in-the-Loop</text>
+  <text x="985" y="252" text-anchor="middle" font-size="9" fill="#92400E">No automated decisions</text>
+  <text x="985" y="264" text-anchor="middle" font-size="9" fill="#92400E">HR review required</text>
+
+  <!-- GDPR badge -->
+  <rect x="905" y="285" width="160" height="55" rx="8" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+  <text x="985" y="308" text-anchor="middle" font-size="10" font-weight="bold" fill="#1D4ED8">GDPR Compliant</text>
+  <text x="985" y="322" text-anchor="middle" font-size="9" fill="#1D4ED8">Only anon_id exposed</text>
+  <text x="985" y="336" text-anchor="middle" font-size="9" fill="#1D4ED8">No PII in UI</text>
+
+  <!-- ─── ARROWS ────────────────────────────────────────────────────── -->
+  <!-- CSV -> GDPR pipeline -->
+  <line x1="205" y1="150" x2="270" y2="195" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="220" y="175" font-size="9" fill="#94A3B8" transform="rotate(-25,220,175)">mount :ro</text>
+
+  <!-- GDPR -> Model -->
+  <line x1="450" y1="235" x2="462" y2="235" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+  <!-- Model -> FastAPI -->
+  <line x1="640" y1="235" x2="652" y2="235" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+  <!-- Pipeline -> Volume -->
+  <line x1="362" y1="313" x2="362" y2="328" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="552" y1="313" x2="552" y2="328" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- FastAPI -> Frontend (internal Docker network) -->
+  <line x1="555" y1="515" x2="555" y2="518" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-blue)"/>
+  <text x="600" y="514" font-size="9" fill="#6366F1">depends_on: healthy</text>
+
+  <!-- Frontend -> HR User -->
+  <line x1="850" y1="585" x2="902" y2="175" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="890" y="420" font-size="9" fill="#94A3B8" transform="rotate(-75,890,420)">localhost:3000</text>
+
+  <!-- Vite proxy note -->
+  <rect x="260" y="495" width="590" height="20" rx="4" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1"/>
+  <text x="555" y="509" text-anchor="middle" font-size="10" fill="#15803D">Vite Proxy: /api/*  ->  http://attritioniq-backend:8000  (Docker internal network)</text>
+
+  <!-- Legend -->
+  <rect x="20" y="670" width="1060" height="1" fill="#E2E8F0"/>
+  <text x="35" y="690" font-size="10" fill="#94A3B8">Legend:</text>
+  <rect x="80" y="678" width="12" height="12" rx="2" fill="#1E2761"/>
+  <text x="98" y="689" font-size="10" fill="#64748B">Backend service</text>
+  <rect x="190" y="678" width="12" height="12" rx="2" fill="#6366F1"/>
+  <text x="208" y="689" font-size="10" fill="#64748B">Frontend service</text>
+  <rect x="300" y="678" width="12" height="12" rx="2" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="318" y="689" font-size="10" fill="#64748B">Persistent volume</text>
+  <line x1="420" y1="684" x2="460" y2="684" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="470" y="689" font-size="10" fill="#64748B">Data flow</text>
+  <line x1="540" y1="684" x2="580" y2="684" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="590" y="689" font-size="10" fill="#64748B">Network / HTTP</text>
+</svg>

@@ -1,10 +1,8 @@
-# Data Card — HRDataset_v14
 
 **Project:** AttritionIQ
 
 ---
 
-## 1. Source
 
 | Attribute    | Value                                             |
 | ------------ | ------------------------------------------------- |
@@ -23,7 +21,6 @@ particular industry or geography.
 
 ---
 
-## 2. Why This Dataset
 
 The dataset was selected for three reasons:
 
@@ -38,7 +35,6 @@ The dataset was selected for three reasons:
 
 ---
 
-## 3. GDPR Processing
 
 The following transformations are applied before any data is used for training
 or inference. The raw CSV never reaches the model.
@@ -79,7 +75,6 @@ The raw dates are then discarded.
 
 ---
 
-## 4. Features Used in the Model
 
 | Feature              | Type    | Range | Description                           |
 | -------------------- | ------- | ----- | ------------------------------------- |
@@ -99,7 +94,6 @@ The raw dates are then discarded.
 
 ---
 
-## 5. Target Variable
 
 | Column | Type   | Values                                      |
 | ------ | ------ | ------------------------------------------- |
@@ -113,7 +107,6 @@ the two. This is a known limitation of the target variable.
 
 ---
 
-## 6. Known Limitations
 
 - **Single organization, single country.** The data reflects one US company.
   Results may not transfer to organizations in different industries,
@@ -130,7 +123,6 @@ the two. This is a known limitation of the target variable.
 
 ---
 
-## 7. Permitted and Prohibited Uses
 
 | Use                                                            | Status          |
 | -------------------------------------------------------------- | --------------- |
