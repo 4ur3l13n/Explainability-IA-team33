@@ -71,6 +71,14 @@ Ce document décrit la proposition de valeur, le parcours client, les aspects cy
 - Interdiction d’envoyer des PII (nom, prénom, NIR, email, etc.).
 - audit et logs : enregistrement de toutes les opérations de transformation / transfert.
 
+### 3.1 Cadre Légal et Traitement Local (In-Memory)
+
+Bien que la plateforme SaaS AttritionIQ ne stocke aucune donnée personnelle nominative (PII), l'ingestion et le hachage des données brutes en local constituent un **traitement de données personnelles** au sens de l'Article 4 du RGPD. Notre architecture *Privacy by Design* répond rigoureusement à ces exigences :
+
+* **Répartition des rôles :** Le Client demeure le **Responsable de Traitement** des données RH. L'outil local AttritionIQ agit techniquement en tant que **Sous-traitant**.
+* **Minimisation des données (Art. 5) :** Le script local effectue un tri drastique. Il ne charge en mémoire vive (RAM) que les colonnes configurées. Toute donnée lue n'appartenant pas au périmètre strict du modèle prédictif est ignorée et immédiatement purgée de la mémoire.
+* **Sécurité du traitement éphémère (Art. 32) :** La pseudonymisation (Hash SHA-256 + Salt) s'effectue à la volée sur le serveur du client. Aucune donnée non chiffrée n'est écrite sur le disque durant ce processus de transition.
+* **Base légale (Art. 6) :** Le déploiement de la solution s'appuie sur l'**intérêt légitime** de l'entreprise (prévention des risques psychosociaux, maintien des effectifs, amélioration des conditions de travail) ou sur le **consentement** préalable des collaborateurs, conformément au registre des traitements du client.
 ---
 
 ## 4) Tailles géographiques et régulations
