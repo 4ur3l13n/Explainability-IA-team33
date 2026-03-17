@@ -33,6 +33,8 @@ This document outlines the value proposition, customer journey, cybersecurity an
   - `python backend/main.py` (or `python backend/model/train.py` depending on implementation).
 - To serve a local dashboard (if applicable, e.g., Streamlit):
   - `streamlit run frontend/src/App.jsx` or `python backend/app.py`.
+- To run with the file .sh:
+  - `./start.sh`
 
 On first launch, the backend runs the GDPR pipeline and trains the model
 automatically (~60 seconds). Once ready:
