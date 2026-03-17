@@ -45,7 +45,7 @@ Ce document décrit la proposition de valeur, le parcours client, les aspects cy
 
 ### 1.2 Client cible
 - Acteurs RH + Data Science + DSI à enjeux de rétention du personnel.
-- Objectif : prédire et réduire l’attrition, augmenter le bien-être au travail.
+- Objectif : prédire et réduire l’attrition, augmenter le bien-être au travail, garder des valeurs de fidélité dans l'entreprise client.
 - Besoins : contrôle sur les données sensibles, modèle explicable, conformité RGPD.
 
 ---
